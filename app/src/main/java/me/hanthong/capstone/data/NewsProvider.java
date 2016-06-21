@@ -13,7 +13,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 @ContentProvider(authority = NewsProvider.AUTHORITY, database = NewsDatabase.class)
 public final class NewsProvider {
 
-    public static final String AUTHORITY = "me.hanthong.capstone.provider";
+    public static final String AUTHORITY = "me.hanthong.capstone";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     private static Uri buildUri(String... paths) {
