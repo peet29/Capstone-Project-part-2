@@ -8,17 +8,32 @@ import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.einmalfel.earl.EarlParser;
+import com.einmalfel.earl.Feed;
+import com.einmalfel.earl.RSSEnclosure;
+import com.einmalfel.earl.RSSFeed;
+import com.einmalfel.earl.RSSItem;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.zip.DataFormatException;
+
+import me.hanthong.capstone.data.NewsColumns;
+import me.hanthong.capstone.data.NewsProvider;
 
 /**
  * Handle the transfer of data between a server and an
@@ -82,23 +97,64 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = "http://englishnews.thaipbs.or.th/feed/";
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        Log.d("Volley", "Response is: " + response.substring(0, 500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Volley", "It didn't work!");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-        queue.start();
+        try {
+            InputStream inputStream = new URL(url).openConnection().getInputStream();
+            Feed feed = EarlParser.parseOrThrow(inputStream, 0);
+            Log.i("Feed", "Processing feed: " + feed.getTitle());
 
+             ArrayList<ContentValues> cvArray = new ArrayList<>();
+
+            if (RSSFeed.class.isInstance(feed)) {
+                RSSFeed rssFeed = (RSSFeed) feed;
+                for (RSSItem item : rssFeed.items) {
+                    String title = item.getTitle();
+                    Log.i("Feed", "Item title: " + (title == null ? "N/A" : title));
+
+                    RSSEnclosure enclosure = item.enclosures.get(0);
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(NewsColumns.TITLE, item.getTitle());
+                    contentValues.put(NewsColumns.LINK, item.getLink());
+                    contentValues.put(NewsColumns.DESCRIPTION, item.getDescription());
+                    contentValues.put(NewsColumns.FAV, 0);
+                    contentValues.put(NewsColumns.DATE, Long.toString(item.pubDate.getTime()));
+                    contentValues.put(NewsColumns.PHOTO, enclosure.getLink());
+
+                    String select = "("+NewsColumns.TITLE+ " = ? )";
+                    Cursor check = mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns.TITLE},
+                            select,new String[]{item.getTitle()},null,null);
+                    check.moveToFirst();
+                    if(check.getCount() > 0) {
+                        int columIndex = check.getColumnIndex(NewsColumns.TITLE);
+                        if (item.getTitle().compareTo(check.getString(columIndex)) == 1 ) {
+                            cvArray.add(contentValues);
+                        }
+                    }else{
+                        cvArray.add(contentValues);
+                    }
+                    check.close();
+                }
+            }
+            ContentValues[] cc = new ContentValues[cvArray.size()];
+            cvArray.toArray(cc);
+
+            mContentResolver.bulkInsert(NewsProvider.Lists.LISTS, cc);
+            Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID},null,null,null);
+            Log.d("Provider data", Integer.toString(c.getCount()));
+            c.close();
+
+
+
+        }catch (MalformedURLException e) {
+           Log.d("Url","error");
+        }catch (IOException e){
+            Log.d("IO","ERROR");
+        }catch (XmlPullParserException e)
+        {
+            Log.d("XML","error");
+        }catch (DataFormatException e){
+            Log.d("Date","Error");
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 }

@@ -36,10 +36,6 @@ public interface NewsColumns {
 
     @DataType(TEXT)
     @NotNull
-    String CONTENT = "content";
-
-    @DataType(TEXT)
-    @NotNull
     String PHOTO = "photo";
 
     @DataType(INTEGER)
