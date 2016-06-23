@@ -11,6 +11,7 @@
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:background="@color/colorPrimary"
         android:minHeight="@dimen/toolbar_height">
 
@@ -23,5 +24,6 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context="me.hanthong.capstone.NewsFragment"
-        tools:listitem="@layout/fragment_news" />
+        tools:listitem="@layout/fragment_news"
+        android:background="@color/listBG"/>
 </LinearLayout>
