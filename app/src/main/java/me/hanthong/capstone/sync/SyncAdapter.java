@@ -15,8 +15,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.RSSEnclosure;
@@ -94,7 +92,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.d(LOG_TAG, "syncWork");
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = "http://englishnews.thaipbs.or.th/feed/";
 
         try {
