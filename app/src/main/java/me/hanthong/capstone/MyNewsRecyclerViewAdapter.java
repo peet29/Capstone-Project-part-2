@@ -80,7 +80,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Log.d(TAG, "Element " + position + " set.");
+        //Log.d(TAG, "Element " + position + " set.");
         mCursor.moveToPosition(position);
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
