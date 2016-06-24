@@ -108,7 +108,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         // TODO Add your menu entries here
         super.onCreateOptionsMenu(menu, inflater);
 
-      inflater.inflate(R.menu.menu_main, menu);
+      inflater.inflate(R.menu.menu_detail, menu);
 
         // Locate MenuItem with ShareActionProvider
         MenuItem item = menu.findItem(R.id.menu_item_share);
