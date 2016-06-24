@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import me.hanthong.capstone.data.NewsColumns;
 import me.hanthong.capstone.data.NewsProvider;
+import me.hanthong.capstone.sync.SyncUtils;
 
 
 public class NewsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -25,6 +27,8 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     protected RecyclerView mRecyclerView;
     protected MyNewsRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
+    protected SwipeRefreshLayout mSwipeContainer;
+    private LoaderManager mLoaderManager;
 
     String[] PROJECTION = {
             NewsColumns._ID,
@@ -46,7 +50,8 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLoaderManager().initLoader(NEWS_LOADER, null, this);
+        mLoaderManager = getLoaderManager();
+        mLoaderManager.initLoader(NEWS_LOADER, null, this);
     }
 
     @Override
@@ -58,6 +63,21 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mSwipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                SyncUtils.TriggerRefresh();
+                //mLoaderManager.restartLoader(NEWS_LOADER,null,null);
+            }
+
+        });
+
 
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.RecyclerView);
@@ -83,6 +103,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         mAdapter.swapCursor(data);
+        mSwipeContainer.setRefreshing(false);
     }
 
     @Override
