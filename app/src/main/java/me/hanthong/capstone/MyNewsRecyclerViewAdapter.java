@@ -22,6 +22,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
     private Cursor mCursor;
     private Context mContext;
 
+
     // BEGIN_INCLUDE(recyclerViewSampleViewHolder)
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -30,10 +31,12 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         private final TextView newsTitle;
         private final TextView newsDate;
         private final ImageView newsImage;
+        public String newsID;
 
         public ViewHolder(View v) {
             super(v);
             final Context itemContext = v.getContext();
+            final String intentKey = "news_id";
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -41,6 +44,8 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                     Log.d(TAG, "Element " + getPosition() + " clicked.");
 
                     Intent intent = new Intent(itemContext, DetailActivity.class);
+                    intent.putExtra(intentKey,newsID);
+                    Log.d(TAG,"NewsID "+newsID);
                     itemContext.startActivity(intent);
 
                 }
@@ -99,6 +104,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                 .centerCrop()
                 .into(viewHolder.getNewsImage());
 
+        viewHolder.newsID = mCursor.getString(mCursor.getColumnIndex(NewsColumns._ID));
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
 
