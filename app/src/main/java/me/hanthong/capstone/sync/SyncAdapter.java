@@ -108,7 +108,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 RSSFeed rssFeed = (RSSFeed) feed;
                 for (RSSItem item : rssFeed.items) {
                     String title = item.getTitle();
-                    Log.i("Feed", "Item title: " + (title == null ? "N/A" : title));
+                    //Log.i("Feed", "Item title: " + (title == null ? "N/A" : title));
 
                     Date date = new Date(item.pubDate.getTime());
                     SimpleDateFormat sdf = new SimpleDateFormat("d LLL yyyy  HH:mm", Locale.getDefault());
@@ -140,9 +140,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             cvArray.toArray(cc);
 
             mContentResolver.bulkInsert(NewsProvider.Lists.LISTS, cc);
-            Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID},null,null,null);
-            Log.d("Provider data", Integer.toString(c.getCount()));
-            c.close();
+
+            //Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID},null,null,null);
+            Log.d("Provider data", Integer.toString(cc.length));
+            //c.close();
 
 
 
