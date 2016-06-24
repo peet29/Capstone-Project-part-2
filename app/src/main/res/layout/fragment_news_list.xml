@@ -29,5 +29,6 @@
         android:background="@color/listBG"
         app:layoutManager="LinearLayoutManager"
         tools:context="me.hanthong.capstone.NewsFragment"
-        tools:listitem="@layout/fragment_news" />
+        tools:listitem="@layout/fragment_news"
+        android:scrollbars="vertical" />
 </LinearLayout>
