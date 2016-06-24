@@ -54,7 +54,6 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-
         //for crate home button
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);

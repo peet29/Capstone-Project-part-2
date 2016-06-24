@@ -12,11 +12,12 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
         android:background="@color/colorPrimary"
+        android:elevation="4dp"
         android:minHeight="@dimen/toolbar_height"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@android:color/white">
 
     </android.support.v7.widget.Toolbar>
 
@@ -25,8 +26,8 @@
         android:name="me.hanthong.capstone.NewsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/listBG"
         app:layoutManager="LinearLayoutManager"
         tools:context="me.hanthong.capstone.NewsFragment"
-        tools:listitem="@layout/fragment_news"
-        android:background="@color/listBG"/>
+        tools:listitem="@layout/fragment_news" />
 </LinearLayout>
