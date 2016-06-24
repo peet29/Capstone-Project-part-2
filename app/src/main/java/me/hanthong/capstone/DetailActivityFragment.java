@@ -102,6 +102,19 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            getActivity().startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
