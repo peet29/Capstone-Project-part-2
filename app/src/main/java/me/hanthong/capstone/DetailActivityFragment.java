@@ -2,6 +2,7 @@ package me.hanthong.capstone;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private TextView mTitleText;
     private TextView mBodyText;
     private long mNewsID;
+    private Uri mNewsLink;
 
     String[] PROJECTION = {
             NewsColumns._ID,
@@ -115,6 +117,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 .crossFade()
                 .centerCrop()
                 .into(mNewsImage);
-
+        mNewsLink = Uri.parse(data.getString(data.getColumnIndex(NewsColumns.LINK)));
     }
 }
