@@ -6,4 +6,6 @@
     <dimen name="cardview_margin">8dp</dimen>
     <dimen name="toolbar_height">48dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="titleText_size">20sp</dimen>
+    <dimen name="bodyText_size">14sp</dimen>
 </resources>

@@ -24,8 +24,16 @@
             android:src="@drawable/hold" />
 
         <TextView
+            android:id="@+id/detailnews_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/titleText_size"
+            android:text="Title"/>
+        <TextView
+            android:id="@+id/detailNews_bodytext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/bodyText_size"
             android:text="asasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss" />
 
     </LinearLayout>
