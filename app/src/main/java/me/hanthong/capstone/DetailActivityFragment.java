@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +40,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private TextView mBodyText;
     private long mNewsID;
     private Uri mNewsLink;
+
 
     String[] PROJECTION = {
             NewsColumns._ID,
@@ -65,8 +68,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         mNewsImage = (ImageView) view.findViewById(R.id.detailNews_image);
         mTitleText = (TextView) view.findViewById(R.id.detailnews_title);
-        mBodyText = (TextView)view.findViewById(R.id.detailNews_bodytext);
-        mNewsID =  Long.valueOf(intent.getStringExtra("news_id"));
+        mBodyText = (TextView) view.findViewById(R.id.detailNews_bodytext);
+        mNewsID = Long.valueOf(intent.getStringExtra("news_id"));
 
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -78,7 +81,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             }
         });
 
-        //getLoaderManager().initLoader(0,null,null);
+        Button button = (Button) view.findViewById(R.id.readmore_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+                intentBuilder.build().launchUrl(getActivity(), mNewsLink);
+            }
+        });
+
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         return view;
     }
@@ -91,7 +102,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), NewsProvider.Lists.withId(mNewsID),PROJECTION,null,null,null);
+        return new CursorLoader(getActivity(), NewsProvider.Lists.withId(mNewsID), PROJECTION, null, null, null);
     }
 
     @Override
@@ -102,7 +113,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
-        Log.d("Data",String.valueOf(data.getCount()));
+        Log.d("Data", String.valueOf(data.getCount()));
 
         String titleText = data.getString(data.getColumnIndex(NewsColumns.TITLE));
 

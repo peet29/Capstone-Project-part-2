@@ -59,6 +59,12 @@
                 android:layout_height="wrap_content"
                 android:text="asasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
                 android:textSize="@dimen/bodyText_size" />
+            
+            <Button
+                android:id="@+id/readmore_button"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="@string/button_text"/>
 
         </LinearLayout>
     </ScrollView>
