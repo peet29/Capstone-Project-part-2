@@ -28,7 +28,6 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     protected MyNewsRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected SwipeRefreshLayout mSwipeContainer;
-    private LoaderManager mLoaderManager;
 
     String[] PROJECTION = {
             NewsColumns._ID,
@@ -50,8 +49,8 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLoaderManager = getLoaderManager();
-        mLoaderManager.initLoader(NEWS_LOADER, null, this);
+        LoaderManager LoaderManager = getLoaderManager();
+        LoaderManager.initLoader(NEWS_LOADER, null, this);
     }
 
     @Override
