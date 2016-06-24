@@ -68,7 +68,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String order  = NewsColumns._ID+" ASC";
+        String order  = NewsColumns.DATE+" DESC";
         return new CursorLoader(getActivity(), NewsProvider.Lists.LISTS,PROJECTION,null,null,order);
     }
 
