@@ -26,20 +26,23 @@
             android:authorities="me.hanthong.capstone.data.NewsProvider"
             android:exported="false" />
 
-        <service android:name="me.hanthong.capstone.sync.AuthenticatorService">
+        <service android:name=".sync.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
         <service
             android:name=".sync.SyncService"
             android:exported="true">
-            <!-- This intent filter is required. It allows the system to launch our sync service
-            as needed. -->
+
+            <!--
+            This intent filter is required. It allows the system to launch our sync service
+            as needed.
+            -->
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -48,6 +51,16 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.hanthong.capstone.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

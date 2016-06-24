@@ -1,6 +1,7 @@
 package me.hanthong.capstone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,11 +33,16 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
 
         public ViewHolder(View v) {
             super(v);
+            final Context itemContext = v.getContext();
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getPosition() + " clicked.");
+
+                    Intent intent = new Intent(itemContext, DetailActivity.class);
+                    itemContext.startActivity(intent);
+
                 }
             });
             newsTitle = (TextView) v.findViewById(R.id.news_title);
