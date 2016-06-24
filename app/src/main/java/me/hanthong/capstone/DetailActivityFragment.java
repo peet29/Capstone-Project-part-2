@@ -11,11 +11,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -40,6 +45,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private TextView mBodyText;
     private long mNewsID;
     private Uri mNewsLink;
+    private ShareActionProvider mShareActionProvider;
 
 
     String[] PROJECTION = {
@@ -63,6 +69,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         Intent intent = activity.getIntent();
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        setHasOptionsMenu(true);
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -93,6 +100,33 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         return view;
     }
+
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Add your menu entries here
+        super.onCreateOptionsMenu(menu, inflater);
+
+      inflater.inflate(R.menu.menu_main, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        mShareActionProvider.setShareIntent(createShareForecastIntent());
+
+    }
+
+    private Intent createShareForecastIntent() {
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,mNewsLink.toString());
+        return shareIntent;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
