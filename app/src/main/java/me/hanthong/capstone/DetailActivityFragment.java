@@ -1,5 +1,6 @@
 package me.hanthong.capstone;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -102,7 +103,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                     mFav = 1;
                     snackeText = getString(R.string.snackbar_save_news);
                 }
-
+                saveOrRemoveReadlist();
                 Snackbar.make(view, snackeText, Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
 
@@ -122,9 +123,11 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         return view;
     }
 
-    private void saveReadlist()
+    private void saveOrRemoveReadlist()
     {
-
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NewsColumns.FAV, mFav);
+        getActivity().getContentResolver().update(NewsProvider.Lists.withId(mNewsID),contentValues,null,null);
     }
 
 
