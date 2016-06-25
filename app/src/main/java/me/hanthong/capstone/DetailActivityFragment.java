@@ -46,6 +46,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private long mNewsID;
     private Uri mNewsLink;
     private ShareActionProvider mShareActionProvider;
+    private FloatingActionButton mFab;
 
 
     String[] PROJECTION = {
@@ -79,12 +80,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mNewsID = Long.valueOf(intent.getStringExtra("news_id"));
 
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
+                mFab.setImageResource(R.drawable.ic_turned_in_white_24dp);
             }
         });
 
