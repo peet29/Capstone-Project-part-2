@@ -47,6 +47,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private Uri mNewsLink;
     private ShareActionProvider mShareActionProvider;
     private FloatingActionButton mFab;
+    private int mFav;
 
 
     String[] PROJECTION = {
@@ -78,15 +79,33 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mTitleText = (TextView) view.findViewById(R.id.detailnews_title);
         mBodyText = (TextView) view.findViewById(R.id.detailNews_bodytext);
         mNewsID = Long.valueOf(intent.getStringExtra("news_id"));
-
+        mFav = Integer.valueOf(intent.getStringExtra("news_fav"));
 
         mFab = (FloatingActionButton) view.findViewById(R.id.fab);
+
+        if(mFav == 1) {
+            mFab.setImageResource(R.drawable.ic_turned_in_white_24dp);
+        }else{
+            mFab.setImageResource(R.drawable.ic_turned_in_not_white_24dp);
+        }
+
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_SHORT)
+                String snackeText;
+                if(mFav == 1) {
+                    mFab.setImageResource(R.drawable.ic_turned_in_not_white_24dp);
+                    snackeText = getString(R.string.snackbar_remove_news);
+                    mFav = 0;
+                }else{
+                    mFab.setImageResource(R.drawable.ic_turned_in_white_24dp);
+                    mFav = 1;
+                    snackeText = getString(R.string.snackbar_save_news);
+                }
+
+                Snackbar.make(view, snackeText, Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
-                mFab.setImageResource(R.drawable.ic_turned_in_white_24dp);
+
             }
         });
 
@@ -101,6 +120,11 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         return view;
+    }
+
+    private void saveReadlist()
+    {
+
     }
 
 

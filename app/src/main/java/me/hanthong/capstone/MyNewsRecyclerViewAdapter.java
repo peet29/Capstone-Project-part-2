@@ -32,6 +32,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         public final TextView newsDate;
         public final ImageView newsImage;
         public String newsID;
+        public String Fav;
 
         public ViewHolder(View v) {
             super(v);
@@ -45,6 +46,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
 
                     Intent intent = new Intent(itemContext, DetailActivity.class);
                     intent.putExtra(intentKey,newsID);
+                    intent.putExtra("news_fav",Fav);
                     Log.d(TAG,"NewsID "+newsID);
                     itemContext.startActivity(intent);
 
@@ -106,6 +108,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                 .into(viewHolder.getNewsImage());
 
         viewHolder.newsID = mCursor.getString(mCursor.getColumnIndex(NewsColumns._ID));
+        viewHolder.Fav = mCursor.getString(mCursor.getColumnIndex(NewsColumns.FAV));
 
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
