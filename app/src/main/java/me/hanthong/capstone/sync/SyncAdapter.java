@@ -13,9 +13,11 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -148,7 +150,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             mContentResolver.bulkInsert(NewsProvider.Lists.LISTS, cc);
 
-            if(cc.length>0) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            if(cc.length>0 && prefs.getBoolean(getContext().getString(R.string.pref_notification_key),true) ) {
                 showNotifications();
             }
             //Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID},null,null,null);
