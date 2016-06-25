@@ -68,6 +68,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.hanthong.capstone.MainActivity" />
         </activity>
+        <activity
+            android:name=".ReadLists"
+            android:label="@string/title_activity_read_lists"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.hanthong.capstone.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
