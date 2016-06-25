@@ -154,6 +154,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             if(cc.length>0 && prefs.getBoolean(getContext().getString(R.string.pref_notification_key),true) ) {
                 showNotifications();
             }
+            deleteOldData();
+
             //Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID},null,null,null);
             Log.d("Provider data", Integer.toString(cc.length));
             //c.close();
@@ -201,5 +203,36 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
         notificationManager.notify(1, builder.build());
         c.close();
+    }
+
+    private void deleteOldData()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String order  = NewsColumns.DATE+" ASC";
+        String select = NewsColumns.FAV + " = ?";
+        Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,
+                new String[]{ NewsColumns._ID,NewsColumns.FAV},
+                select,
+                new String[]{"0"},
+                order);
+        int maxItem = Integer.valueOf(prefs.getString(getContext().getString(R.string.pref_maxitem_key),getContext().getString(R.string.pref_maxitem_default)));
+        int deletNum = 0;
+        if(c.getCount() >0 && c.getCount() > maxItem) {
+            deletNum = c.getCount() - maxItem;
+        }
+        int[] deleID;
+        if(deletNum != 0)
+        {
+            c.moveToFirst();
+            deleID = new int[deletNum];
+            for(int i = 0;i < deletNum;i++)
+            {
+                deleID[i] = Integer.valueOf(c.getString(c.getColumnIndex(NewsColumns._ID)));
+                c.moveToNext();
+            }
+            for(int i = 0;i < deletNum;i++) {
+                mContentResolver.delete(NewsProvider.Lists.withId((long)deleID[i]),null,null);
+            }
+        }
     }
 }
