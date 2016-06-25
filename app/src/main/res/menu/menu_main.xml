@@ -12,6 +12,6 @@
         android:id="@+id/action_readlists"
         android:icon="@drawable/ic_turned_in_white_24dp"
         android:title="@string/action_readlists"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
 </menu>
