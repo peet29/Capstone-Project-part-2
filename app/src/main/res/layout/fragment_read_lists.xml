@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="me.hanthong.capstone.ReadLists">
 
     <android.support.design.widget.AppBarLayout
@@ -20,5 +21,21 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/listBG"
+        android:scrollbars="vertical"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/fragment_news" />
+    <TextView
+        android:id="@+id/show_net_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/readlist_save_news_text"
+        android:textSize="@dimen/titleText_size"
+        android:gravity="center"
+        android:clickable="true"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
