@@ -112,6 +112,10 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
             Intent intent = new Intent(getActivity(), SettingsActivity.class);
             getActivity().startActivity(intent);
             return true;
+        }else if(id == R.id.action_readlists){
+            Intent intent = new Intent(getActivity(), ReadLists.class);
+            getActivity().startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
 
