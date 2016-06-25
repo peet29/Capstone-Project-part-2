@@ -15,6 +15,8 @@
     <string name="snackbar_save_news">Save news to read lists.</string>
     <string name="snackbar_remove_news">Remove news from read lists.</string>
 
+    <string name="empty_news_list">No News Available</string>
+
     <!-- Strings related to Settings -->
 
     <string name="pref_title_sync_frequency_default">60</string>
@@ -34,4 +36,6 @@
     <string name="pref_notification_key">notification</string>
     <string name="pref_notification_title">Notification</string>
     <string name="title_activity_read_lists">Read Lists</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
