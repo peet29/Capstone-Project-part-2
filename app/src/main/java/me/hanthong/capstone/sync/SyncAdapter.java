@@ -5,14 +5,19 @@ package me.hanthong.capstone.sync;
  */
 
 import android.accounts.Account;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.einmalfel.earl.EarlParser;
@@ -33,6 +38,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.zip.DataFormatException;
 
+import me.hanthong.capstone.DetailActivity;
+import me.hanthong.capstone.R;
 import me.hanthong.capstone.data.NewsColumns;
 import me.hanthong.capstone.data.NewsProvider;
 
@@ -46,7 +53,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // Global variables
     // Define a variable to contain a content resolver instance
     ContentResolver mContentResolver;
-
+    String mNewsID;
     /**
      * Set up the sync adapter
      */
@@ -141,6 +148,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             mContentResolver.bulkInsert(NewsProvider.Lists.LISTS, cc);
 
+            if(cc.length>0) {
+                showNotifications();
+            }
             //Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID},null,null,null);
             Log.d("Provider data", Integer.toString(cc.length));
             //c.close();
@@ -159,5 +169,34 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+    }
+
+    private void showNotifications()
+    {
+        String order  = NewsColumns.DATE+" DESC";
+        Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID,NewsColumns.TITLE,NewsColumns.DATE},null,null,order);
+        c.moveToFirst();
+        Intent resultIntent = new Intent(getContext(), DetailActivity.class);
+        resultIntent.putExtra("news_id",c.getString(c.getColumnIndex(NewsColumns._ID)));
+
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        getContext(),
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(getContext())
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setAutoCancel(true)
+                        .setContentTitle(c.getString(c.getColumnIndex(NewsColumns.TITLE)))
+                        .setContentText(c.getString(c.getColumnIndex(NewsColumns.DATE)));
+
+        builder.setContentIntent(resultPendingIntent);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        notificationManager.notify(1, builder.build());
+        c.close();
     }
 }
