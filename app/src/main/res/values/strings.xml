@@ -13,20 +13,17 @@
     <string name="pref_title_sync_frequency_default">60</string>
     <string name="pref_sync_key">sync_fre</string>
     <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
+
+    <!--Max item setting-->
+    <string name="pref_maxitem_default">30</string>
+    <string name="pref_maxitem_key">max_item</string>
+    <string name="pref_title_maxitem">Max items</string>
+
+    <!--Sync on open -->
+    <string name="pref_sync_on_open_key">open_sync</string>
+    <string name="pref_sync_on_open_title">Sync on open</string>
+
+    <!--notification -->
+    <string name="pref_notification_key">notification</string>
+    <string name="pref_notification_title">Notification</string>
 </resources>

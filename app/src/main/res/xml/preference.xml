@@ -7,4 +7,23 @@
         android:entries="@array/pref_sync_frequency_titles"
         android:entryValues="@array/pref_sync_frequency_values"
         android:defaultValue="@string/pref_title_sync_frequency_default" />
+    <ListPreference
+        android:key="@string/pref_maxitem_key"
+        android:summary="%s"
+        android:title="@string/pref_title_maxitem"
+        android:dialogTitle="@string/pref_title_maxitem"
+        android:entries="@array/pref_maxitem_title"
+        android:entryValues="@array/pref_maxitem_values"
+        android:defaultValue="@string/pref_maxitem_default" />
+    <CheckBoxPreference
+        android:key="@string/pref_sync_on_open_key"
+        android:title="@string/pref_sync_on_open_title"
+        android:defaultValue="true"
+        />
+    <CheckBoxPreference
+        android:key="@string/pref_notification_key"
+        android:title="@string/pref_notification_title"
+        android:defaultValue="true"
+    />
+
 </PreferenceScreen>
