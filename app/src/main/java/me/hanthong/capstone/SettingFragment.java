@@ -6,15 +6,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import me.hanthong.capstone.data.NewsProvider;
 import me.hanthong.capstone.sync.AuthenticatorService;
 
 
 public class SettingFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
         addPreferencesFromResource(R.xml.preference);
     }
 
@@ -41,6 +46,10 @@ public class SettingFragment extends PreferenceFragment implements SharedPrefere
     @Override
     public void onStart() {
         super.onStart();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "open setting");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 

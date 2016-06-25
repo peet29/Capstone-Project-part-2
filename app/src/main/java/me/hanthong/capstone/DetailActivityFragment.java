@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import me.hanthong.capstone.data.NewsColumns;
 import me.hanthong.capstone.data.NewsProvider;
@@ -37,6 +38,8 @@ import me.hanthong.capstone.data.NewsProvider;
  * A placeholder fragment containing a simple view.
  */
 public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     final static String LOG_TAG = "DetailFragment";
 
@@ -75,6 +78,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         setHasOptionsMenu(true);
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
 
         mNewsImage = (ImageView) view.findViewById(R.id.detailNews_image);
         mTitleText = (TextView) view.findViewById(R.id.detailnews_title);
@@ -120,6 +125,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         });
 
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "app detail");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
         return view;
     }
 

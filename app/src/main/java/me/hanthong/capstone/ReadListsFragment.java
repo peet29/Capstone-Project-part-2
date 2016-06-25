@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import me.hanthong.capstone.data.NewsColumns;
 import me.hanthong.capstone.data.NewsProvider;
 
@@ -26,6 +28,8 @@ import me.hanthong.capstone.data.NewsProvider;
  * A placeholder fragment containing a simple view.
  */
 public class ReadListsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private static final int READ_LOADER = 0;
     protected RecyclerView mRecyclerView;
@@ -56,6 +60,7 @@ public class ReadListsFragment extends Fragment implements LoaderManager.LoaderC
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.RecyclerView);
 
@@ -64,6 +69,10 @@ public class ReadListsFragment extends Fragment implements LoaderManager.LoaderC
         mAdapter = new MyNewsRecyclerViewAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
         mEmptyView.setVisibility(View.GONE);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "open readlist");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 
         LoaderManager LoaderManager = getLoaderManager();
         LoaderManager.initLoader(READ_LOADER, null, this);
@@ -77,6 +86,11 @@ public class ReadListsFragment extends Fragment implements LoaderManager.LoaderC
         if (id == R.id.action_settings) {
             Intent intent = new Intent(getActivity(), SettingsActivity.class);
             getActivity().startActivity(intent);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "setting");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
             return true;
         }
         return super.onOptionsItemSelected(item);
