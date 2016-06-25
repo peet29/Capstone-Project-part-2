@@ -12,8 +12,8 @@
     <string name="readlist_save_news_text">Save some news to show it here.</string>
 
     <string name="net_check_text">Can\'t Load news item. \nPlease check your internet connection. </string>
-    <string name="snackbar_save_news">Save news to read list.</string>
-    <string name="snackbar_remove_news">Remove news from read list.</string>
+    <string name="snackbar_save_news">Save news to read lists.</string>
+    <string name="snackbar_remove_news">Remove news from read lists.</string>
 
     <!-- Strings related to Settings -->
 
