@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import me.hanthong.capstone.data.NewsColumns;
 import me.hanthong.capstone.data.NewsProvider;
@@ -29,6 +30,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private static final int NEWS_LOADER = 0;
     protected RecyclerView mRecyclerView;
+    protected TextView mEmptyView;
     protected MyNewsRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected SwipeRefreshLayout mSwipeContainer;
@@ -53,8 +55,6 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LoaderManager LoaderManager = getLoaderManager();
-        LoaderManager.initLoader(NEWS_LOADER, null, this);
     }
 
     @Override
@@ -85,9 +85,15 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.RecyclerView);
+
+        mEmptyView = (TextView) view.findViewById(R.id.show_net_text);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mAdapter = new MyNewsRecyclerViewAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
+
+        LoaderManager LoaderManager = getLoaderManager();
+        LoaderManager.initLoader(NEWS_LOADER, null, this);
+
         return view;
     }
 
@@ -111,6 +117,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -128,6 +135,14 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
         mAdapter.swapCursor(data);
         mSwipeContainer.setRefreshing(false);
+
+        if(data.getCount()==0) {
+            mSwipeContainer.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }else{
+            mSwipeContainer.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
 
     @Override

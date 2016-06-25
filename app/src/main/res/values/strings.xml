@@ -8,6 +8,8 @@
     <string name="button_text">Read more</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="net_check_text">Can\'t Load news item. \nPlease check your internet connection. </string>
+
     <!-- Strings related to Settings -->
 
     <string name="pref_title_sync_frequency_default">60</string>

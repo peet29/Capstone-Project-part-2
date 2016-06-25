@@ -28,8 +28,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/RecyclerView"
             android:name="me.hanthong.capstone.NewsFragment"
@@ -41,4 +40,12 @@
             tools:context="me.hanthong.capstone.NewsFragment"
             tools:listitem="@layout/fragment_news" />
     </android.support.v4.widget.SwipeRefreshLayout>
+    <TextView
+        android:id="@+id/show_net_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/net_check_text"
+        android:textSize="@dimen/titleText_size"
+        android:gravity="center"
+        android:clickable="true"/>
 </LinearLayout>

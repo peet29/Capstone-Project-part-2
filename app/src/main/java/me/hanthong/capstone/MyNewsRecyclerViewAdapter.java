@@ -28,9 +28,9 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView newsTitle;
-        private final TextView newsDate;
-        private final ImageView newsImage;
+        public final TextView newsTitle;
+        public final TextView newsDate;
+        public final ImageView newsImage;
         public String newsID;
 
         public ViewHolder(View v) {
@@ -83,6 +83,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                 .inflate(R.layout.fragment_news, viewGroup, false);
 
         v.setFocusable(true);
+
         return new ViewHolder(v);
     }
     // END_INCLUDE(recyclerViewOnCreateViewHolder)
@@ -105,6 +106,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                 .into(viewHolder.getNewsImage());
 
         viewHolder.newsID = mCursor.getString(mCursor.getColumnIndex(NewsColumns._ID));
+
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
 
@@ -119,6 +121,5 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
     public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
-        //mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 }
