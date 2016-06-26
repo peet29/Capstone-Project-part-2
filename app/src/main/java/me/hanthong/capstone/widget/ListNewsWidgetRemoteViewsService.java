@@ -15,7 +15,7 @@ import me.hanthong.capstone.data.NewsProvider;
 /**
  * Created by peet29 on 25/6/2559.
  */
-public class listNewsWidgetRemoteViewsService extends RemoteViewsService {
+public class ListNewsWidgetRemoteViewsService extends RemoteViewsService {
     String[] PROJECTION = {
             NewsColumns._ID,
             NewsColumns.TITLE,

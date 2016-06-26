@@ -18,7 +18,7 @@ import me.hanthong.capstone.R;
 /**
  * Implementation of App Widget functionality.
  */
-public class listNewsWidgetProvider extends AppWidgetProvider {
+public class ListNewsWidgetProvider extends AppWidgetProvider {
 
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                          int appWidgetId) {
@@ -70,13 +70,13 @@ public class listNewsWidgetProvider extends AppWidgetProvider {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(R.id.widget_list,
-                new Intent(context, listNewsWidgetRemoteViewsService.class));
+                new Intent(context, ListNewsWidgetRemoteViewsService.class));
     }
 
     @SuppressWarnings("deprecation")
     private void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(0, R.id.widget_list,
-                new Intent(context, listNewsWidgetRemoteViewsService.class));
+                new Intent(context, ListNewsWidgetRemoteViewsService.class));
     }
 }
 
