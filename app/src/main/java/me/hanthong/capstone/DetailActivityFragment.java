@@ -1,10 +1,12 @@
 package me.hanthong.capstone;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -68,6 +70,12 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -124,8 +132,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             }
         });
 
-        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
-
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.VALUE, "app detail");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
@@ -167,15 +173,22 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         // Fetch and store ShareActionProvider
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         mShareActionProvider.setShareIntent(createShareForecastIntent());
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     private Intent createShareForecastIntent() {
-
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT,mNewsLink.toString());
-        return shareIntent;
+        if(mNewsLink != null) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, mNewsLink.toString());
+            return shareIntent;
+        }else{
+            return null;
+        }
     }
 
 
