@@ -183,6 +183,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         c.moveToFirst();
         Intent resultIntent = new Intent(getContext(), DetailActivity.class);
         resultIntent.putExtra("news_id",c.getString(c.getColumnIndex(NewsColumns._ID)));
+        resultIntent.putExtra("news_fav","0");
 
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
