@@ -1,5 +1,7 @@
 package me.hanthong.capstone;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +36,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import me.hanthong.capstone.data.NewsColumns;
 import me.hanthong.capstone.data.NewsProvider;
+import me.hanthong.capstone.widget.ListNewsWidgetProvider;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -117,6 +120,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                     snackeText = getString(R.string.snackbar_save_news);
                 }
                 saveOrRemoveReadlist();
+                upDateWidget();
                 Snackbar.make(view, snackeText, Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
 
@@ -143,6 +147,14 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         ContentValues contentValues = new ContentValues();
         contentValues.put(NewsColumns.FAV, mFav);
         getActivity().getContentResolver().update(NewsProvider.Lists.withId(mNewsID),contentValues,null,null);
+    }
+
+    private void upDateWidget()
+    {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getContext());
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(getContext(), ListNewsWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
     }
 
 

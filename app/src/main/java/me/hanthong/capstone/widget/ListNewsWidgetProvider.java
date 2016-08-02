@@ -35,10 +35,11 @@ public class ListNewsWidgetProvider extends AppWidgetProvider {
         } else {
             setRemoteAdapterV11(context, views);
         }
-        boolean useDetailActivity = true;
-        Intent clickIntentTemplate = useDetailActivity
-                ? new Intent(context, DetailActivity.class)
-                : new Intent(context, MainActivity.class);
+
+
+
+        Intent clickIntentTemplate = new Intent(context, DetailActivity.class);
+
         // Instruct the widget manager to update the widget
         PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                 .addNextIntentWithParentStack(clickIntentTemplate)

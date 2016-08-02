@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPostResume() {
-        mInterstitialAd.show();
+        //mInterstitialAd.show();
         super.onPostResume();
     }
 
