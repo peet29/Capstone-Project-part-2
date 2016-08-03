@@ -7,7 +7,9 @@ package me.hanthong.capstone.sync;
 import android.accounts.Account;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.AbstractThreadedSyncAdapter;
+import android.content.ComponentName;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -44,6 +46,7 @@ import me.hanthong.capstone.DetailActivity;
 import me.hanthong.capstone.R;
 import me.hanthong.capstone.data.NewsColumns;
 import me.hanthong.capstone.data.NewsProvider;
+import me.hanthong.capstone.widget.ListNewsWidgetProvider;
 
 /**
  * Handle the transfer of data between a server and an
@@ -117,18 +120,25 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 RSSFeed rssFeed = (RSSFeed) feed;
                 for (RSSItem item : rssFeed.items) {
                     String title = item.getTitle();
+                    String photoLink;
                     //Log.i("Feed", "Item title: " + (title == null ? "N/A" : title));
 
                     Date date = new Date(item.pubDate.getTime());
                     SimpleDateFormat sdf = new SimpleDateFormat("d LLL yyyy  HH:mm", Locale.getDefault());
-                    RSSEnclosure enclosure = item.enclosures.get(0);
+                    RSSEnclosure enclosure;
+                    if(!item.enclosures.isEmpty()) {
+                        enclosure = item.enclosures.get(0);
+                        photoLink = enclosure.getLink();
+                    }else{
+                        photoLink = "";
+                    }
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(NewsColumns.TITLE, item.getTitle());
                     contentValues.put(NewsColumns.LINK, item.getLink());
                     contentValues.put(NewsColumns.DESCRIPTION, item.getDescription());
                     contentValues.put(NewsColumns.FAV, 0);
                     contentValues.put(NewsColumns.DATE, sdf.format(date));
-                    contentValues.put(NewsColumns.PHOTO, enclosure.getLink());
+                    contentValues.put(NewsColumns.PHOTO, photoLink);
 
                     String select = "("+NewsColumns.TITLE+ " = ? )";
                     Cursor check = mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns.TITLE},
@@ -153,6 +163,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             if(cc.length>0 && prefs.getBoolean(getContext().getString(R.string.pref_notification_key),true) ) {
                 showNotifications();
+                upDateWidget();
             }
             deleteOldData();
 
@@ -235,5 +246,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 mContentResolver.delete(NewsProvider.Lists.withId((long)deleID[i]),null,null);
             }
         }
+    }
+
+    private void upDateWidget()
+    {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getContext());
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(getContext(), ListNewsWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
     }
 }
