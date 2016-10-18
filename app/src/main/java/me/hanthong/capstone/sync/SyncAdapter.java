@@ -107,7 +107,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.d(LOG_TAG, "syncWork");
         // Instantiate the RequestQueue.
-        String url = "http://englishnews.thaipbs.or.th/feed/";
+        String url = getContext().getResources().getString(R.string.rss_url);
 
         try {
             InputStream inputStream = new URL(url).openConnection().getInputStream();
