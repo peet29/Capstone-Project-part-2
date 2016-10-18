@@ -43,4 +43,6 @@
 
     <string name="rss_bangkokpost">http://www.bangkokpost.com/rss/data/most-recent.xml</string>
     <string name="rss_thaipbs">http://englishnews.thaipbs.or.th/feed/</string>
+    <string name="rss_prachatai">http://feeds.feedburner.com/prachataienglish?format=xml</string>
+    <string name="rss_nation">http://www.nationmultimedia.com/rss/breakingnews.rss</string>
 </resources>

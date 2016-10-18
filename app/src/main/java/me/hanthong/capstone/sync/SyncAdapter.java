@@ -217,8 +217,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Instantiate the RequestQueue.
         String urlBangkokPost = getContext().getResources().getString(R.string.rss_bangkokpost);
         String urlThaiPbs = getContext().getResources().getString(R.string.rss_thaipbs);
+        String urlRrachatai = getContext().getResources().getString(R.string.rss_prachatai);
+        String urlNation = getContext().getResources().getString(R.string.rss_nation);
+
         downloadRss(urlBangkokPost);
         downloadRss(urlThaiPbs);
+        downloadRss(urlRrachatai);
+        downloadRss(urlNation);
     }
 
     private void showNotifications()
