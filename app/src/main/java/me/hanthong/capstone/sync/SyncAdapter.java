@@ -58,11 +58,10 @@ import me.hanthong.capstone.widget.ListNewsWidgetProvider;
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
-    final static String LOG_TAG = "SyncAdapter";
+    private final static String LOG_TAG = "SyncAdapter";
     // Global variables
     // Define a variable to contain a content resolver instance
-    ContentResolver mContentResolver;
-    String mNewsID;;
+    private final ContentResolver mContentResolver;
     /**
      * Set up the sync adapter
      */
@@ -281,6 +280,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 mContentResolver.delete(NewsProvider.Lists.withId((long)deleID[i]),null,null);
             }
         }
+        c.close();
     }
 
     private void upDateWidget()
