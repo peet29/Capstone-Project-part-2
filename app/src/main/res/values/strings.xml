@@ -41,6 +41,9 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
+    <string name="natition_key">notifications_key</string>
+    <string name="date_nattion_key">date_natt_key</string>
+
     <string name="rss_bangkokpost">http://www.bangkokpost.com/rss/data/most-recent.xml</string>
     <string name="rss_thaipbs">http://englishnews.thaipbs.or.th/feed/</string>
     <string name="rss_prachatai">http://feeds.feedburner.com/prachataienglish?format=xml</string>

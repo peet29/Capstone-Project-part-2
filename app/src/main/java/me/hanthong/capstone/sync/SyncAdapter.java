@@ -65,6 +65,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // Global variables
     // Define a variable to contain a content resolver instance
     private final ContentResolver mContentResolver;
+
+    private final static String PREFNAME = "SyncPref";
     /**
      * Set up the sync adapter
      */
@@ -170,7 +172,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             if(cc.length>0 && prefs.getBoolean(getContext().getString(R.string.pref_notification_key),true) ) {
-                showNotifications();
+                checkNotifications();
                 upDateWidget();
             }
             deleteOldData();
@@ -222,6 +224,38 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         downloadRss(urlThaiPbs);
         downloadRss(urlRrachatai);
         downloadRss(urlNation);
+    }
+
+    private void checkNotifications()
+    {
+        String order  = NewsColumns.DATE+" DESC";
+        Cursor c =  mContentResolver.query(NewsProvider.Lists.LISTS,new String[]{ NewsColumns._ID,NewsColumns.TITLE,NewsColumns.DATE},null,null,order);
+        c.moveToFirst();
+        //get news title from SharedPreferences
+        SharedPreferences notifications = getContext().getSharedPreferences(PREFNAME,Context.MODE_PRIVATE);
+        String newsTitle = notifications.getString(getContext().getResources().getString(R.string.natition_key),"");
+        Long date = notifications.getLong(getContext().getResources().getString(R.string.date_nattion_key),0);
+
+        if(newsTitle.length()>1){
+            if (newsTitle.compareTo(c.getString(c.getColumnIndex(NewsColumns.TITLE))) == 0 ) {
+                Long cDate = Long.valueOf(c.getString(c.getColumnIndex(NewsColumns.DATE)));
+                if(date < cDate) {
+                    showNotifications();
+                    SharedPreferences.Editor editor = notifications.edit();
+                    editor.putString(getContext().getResources().getString(R.string.natition_key), c.getString(c.getColumnIndex(NewsColumns.TITLE))).commit();
+                    editor.putLong(getContext().getResources().getString(R.string.date_nattion_key),cDate).commit();
+                }
+            }
+        }else{
+            Long cDate = Long.valueOf(c.getString(c.getColumnIndex(NewsColumns.DATE)));
+            showNotifications();
+            SharedPreferences.Editor editor = notifications.edit();
+            editor.putString(getContext().getResources().getString(R.string.natition_key), c.getString(c.getColumnIndex(NewsColumns.TITLE))).commit();
+            editor.putLong(getContext().getResources().getString(R.string.date_nattion_key),cDate).commit();
+        }
+
+
+        c.close();
     }
 
     private void showNotifications()
