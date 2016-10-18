@@ -129,7 +129,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             if (RSSFeed.class.isInstance(feed)) {
                 RSSFeed rssFeed = (RSSFeed) feed;
                 for (RSSItem item : rssFeed.items) {
-                    String title = item.getTitle();
                     String photoLink;
                     //Log.i("Feed", "Item title: " + (title == null ? "N/A" : title));
 
