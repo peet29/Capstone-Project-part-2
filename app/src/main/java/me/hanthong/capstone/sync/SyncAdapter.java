@@ -24,6 +24,12 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.RSSEnclosure;
@@ -32,10 +38,11 @@ import com.einmalfel.earl.RSSItem;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +65,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // Global variables
     // Define a variable to contain a content resolver instance
     ContentResolver mContentResolver;
-    String mNewsID;
+    String mNewsID;;
     /**
      * Set up the sync adapter
      */
@@ -89,32 +96,35 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
-    /*
-         * Specify the code you want to run in the sync adapter. The entire
-         * sync adapter runs in a background thread, so you don't have to set
-         * up your own background processing.
-         */
-    @Override
-    public void onPerformSync(
-            Account account,
-            Bundle extras,
-            String authority,
-            ContentProviderClient provider,
-            SyncResult syncResult) {
-    /*
-     * Put the data transfer code here.
-     */
+    private void downloadRss(String url)
+    {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        ParsRss(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+               Log.d("Feed","can't get Rss");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
 
-        Log.d(LOG_TAG, "syncWork");
-        // Instantiate the RequestQueue.
-        String url = getContext().getResources().getString(R.string.rss_url);
-
+    private void ParsRss(String url)
+    {
         try {
-            InputStream inputStream = new URL(url).openConnection().getInputStream();
+            InputStream inputStream = new ByteArrayInputStream(url.getBytes(StandardCharsets.UTF_8));
             Feed feed = EarlParser.parseOrThrow(inputStream, 0);
             Log.i("Feed", "Processing feed: " + feed.getTitle());
 
-             ArrayList<ContentValues> cvArray = new ArrayList<>();
+            ArrayList<ContentValues> cvArray = new ArrayList<>();
 
             if (RSSFeed.class.isInstance(feed)) {
                 RSSFeed rssFeed = (RSSFeed) feed;
@@ -174,7 +184,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
         }catch (MalformedURLException e) {
-           Log.d("Url","error");
+            Log.d("Url","error");
         }catch (IOException e){
             Log.d("IO","ERROR");
         }catch (XmlPullParserException e)
@@ -185,6 +195,30 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+    }
+
+    /*
+         * Specify the code you want to run in the sync adapter. The entire
+         * sync adapter runs in a background thread, so you don't have to set
+         * up your own background processing.
+         */
+    @Override
+    public void onPerformSync(
+            Account account,
+            Bundle extras,
+            String authority,
+            ContentProviderClient provider,
+            SyncResult syncResult) {
+    /*
+     * Put the data transfer code here.
+     */
+
+        Log.d(LOG_TAG, "syncWork");
+        // Instantiate the RequestQueue.
+        String urlBangkokPost = getContext().getResources().getString(R.string.rss_bangkokpost);
+        String urlThaiPbs = getContext().getResources().getString(R.string.rss_thaipbs);
+        downloadRss(urlBangkokPost);
+        downloadRss(urlThaiPbs);
     }
 
     private void showNotifications()
