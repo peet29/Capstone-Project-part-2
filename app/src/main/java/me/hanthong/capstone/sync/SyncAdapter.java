@@ -43,7 +43,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.zip.DataFormatException;
 
 import me.hanthong.capstone.DetailActivity;
@@ -236,6 +239,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         0,
                         resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
+        Date date = new Date(Long.valueOf(c.getString(c.getColumnIndex(NewsColumns.DATE))));
+        SimpleDateFormat sdf = new SimpleDateFormat("d LLL yyyy  HH:mm", Locale.getDefault());
+        String dateText = sdf.format(date);
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(getContext())
@@ -243,7 +249,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setAutoCancel(true)
                         .setContentTitle(c.getString(c.getColumnIndex(NewsColumns.TITLE)))
-                        .setContentText(c.getString(c.getColumnIndex(NewsColumns.DATE)));
+                        .setContentText(dateText);
 
         builder.setContentIntent(resultPendingIntent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
