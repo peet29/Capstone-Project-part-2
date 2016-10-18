@@ -43,10 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.zip.DataFormatException;
 
 import me.hanthong.capstone.DetailActivity;
@@ -132,8 +129,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     String photoLink;
                     //Log.i("Feed", "Item title: " + (title == null ? "N/A" : title));
 
-                    Date date = new Date(item.pubDate.getTime());
-                    SimpleDateFormat sdf = new SimpleDateFormat("d LLL yyyy  HH:mm", Locale.getDefault());
+                    //Date date = new Date(item.pubDate.getTime());
+                    //SimpleDateFormat sdf = new SimpleDateFormat("d LLL yyyy  HH:mm", Locale.getDefault());
                     RSSEnclosure enclosure;
                     if(!item.enclosures.isEmpty()) {
                         enclosure = item.enclosures.get(0);
@@ -146,7 +143,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     contentValues.put(NewsColumns.LINK, item.getLink());
                     contentValues.put(NewsColumns.DESCRIPTION, item.getDescription());
                     contentValues.put(NewsColumns.FAV, 0);
-                    contentValues.put(NewsColumns.DATE, sdf.format(date));
+                    contentValues.put(NewsColumns.DATE, Long.toString(item.pubDate.getTime()));
                     contentValues.put(NewsColumns.PHOTO, photoLink);
 
                     String select = "("+NewsColumns.TITLE+ " = ? )";

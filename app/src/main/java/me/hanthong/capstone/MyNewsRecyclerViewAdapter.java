@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import me.hanthong.capstone.data.NewsColumns;
 
 
@@ -99,7 +103,9 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         viewHolder.getNewsTitle().setText(mCursor.getString(mCursor.getColumnIndex(NewsColumns.TITLE)));
-        viewHolder.getNewsDate().setText(mCursor.getString(mCursor.getColumnIndex(NewsColumns.DATE)));
+        Date date = new Date(Long.valueOf(mCursor.getString(mCursor.getColumnIndex(NewsColumns.DATE))));
+        SimpleDateFormat sdf = new SimpleDateFormat("d LLL yyyy  HH:mm", Locale.getDefault());
+        viewHolder.getNewsDate().setText(sdf.format(date));
         Glide.with(mContext)
                 .load(mCursor.getString(mCursor.getColumnIndex(NewsColumns.PHOTO)))
                 .error(R.drawable.hold)
